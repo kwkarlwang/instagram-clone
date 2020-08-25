@@ -1,0 +1,23 @@
+{
+  "id": 1,
+  "PostUser": "user_agent",
+  "PostAvatar": "https://picsum.photos/100/100",
+  "PostDesc": "blah blah blah",
+  "PostLikes": 3,
+  "Comments": [
+    {
+      "id": 2,
+      "CommentUser": "facebook",
+      "CommentAvatar": "https://picsum.photos/100/100",
+      "CommentText": "Photo looks great!",
+      "InnerComments": [
+        {
+          "id": 3,
+          "CommentUser": "apple",
+          "CommentAvatar": "https://picsum.photos/100/100",
+          "CommentText": "Hello"
+        }
+      ]
+    }
+  ]
+}

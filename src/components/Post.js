@@ -9,22 +9,33 @@ import {
 } from "react-bootstrap-icons";
 import donut_logo from "../assets/donut.svg";
 import "./Post.css";
+import MockData from "../schema/Post.json";
 export class Post extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+  componentDidMount() {
+    this.setState({
+      ...MockData,
+    });
+  }
   render() {
+    console.log(this.state);
     return (
       <Card>
         <Card.Body id="username-container">
-          <Card.Text className="username">
+          <Card.Text className="font-weight-bold">
             <Image
               src={donut_logo}
               roundedCircle
               fluid
               style={{ width: "2rem", marginRight: "1rem" }}
             ></Image>
-            user_agent
-            <div className="align-middle float-right">
+            {this.state.PostUser}
+            <span className="align-middle float-right">
               <ThreeDots className="icons"></ThreeDots>
-            </div>
+            </span>
           </Card.Text>
         </Card.Body>
         <Card.Img variant="top" src="https://picsum.photos/400/300" />
@@ -41,11 +52,14 @@ export class Post extends Component {
               className="icons float-right"
             ></Bookmark>
           </div>
+          {/* replace this later */}
+          <Card.Text className="font-weight-bold">3 likes</Card.Text>
           <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            <span className="font-weight-bold">{this.state.PostUser}</span>
+            &nbsp;
+            <span>{this.state.PostDesc}</span>
           </Card.Text>
-          <Button variant="primary">Go somewhere</Button>
+          {/* <Button variant="primary">Go somewhere</Button> */}
         </Card.Body>
       </Card>
     );
