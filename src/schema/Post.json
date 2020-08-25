@@ -4,18 +4,24 @@
   "PostAvatar": "https://picsum.photos/100/100",
   "PostDesc": "blah blah blah",
   "PostLikes": 3,
+  "PostLiked": false,
+  "PostTime": "Now",
   "Comments": [
     {
       "id": 2,
       "CommentUser": "facebook",
       "CommentAvatar": "https://picsum.photos/100/100",
       "CommentText": "Photo looks great!",
+      "CommentLiked": false,
+      "CommentTime": "1 HOUR AGO",
       "InnerComments": [
         {
           "id": 3,
           "CommentUser": "apple",
           "CommentAvatar": "https://picsum.photos/100/100",
-          "CommentText": "Hello"
+          "CommentText": "Hello",
+          "CommentLiked": false,
+          "CommentTime": "1 HOUR AGO"
         }
       ]
     }

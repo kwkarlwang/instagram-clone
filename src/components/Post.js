@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { Card, Button, Image, Row, Col } from "react-bootstrap";
+import {
+  Card,
+  Button,
+  Image,
+  Row,
+  Col,
+  ListGroup,
+  ListGroupItem,
+} from "react-bootstrap";
 import {
   Heart,
   ThreeDots,
@@ -13,15 +21,73 @@ import MockData from "../schema/Post.json";
 export class Post extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      ...MockData,
+      commentText: "",
+    };
   }
   componentDidMount() {
-    this.setState({
-      ...MockData,
-    });
+    // this.setState({ ...MockData });
   }
   render() {
-    console.log(this.state);
+    const { Comments, commentText } = this.state;
+    let outerComments = [];
+    if (Comments.length) {
+      let numberOfComments = 0;
+      const commentsList = this.state.Comments.map((outerComment) => {
+        numberOfComments++;
+        numberOfComments += outerComment.InnerComments.length;
+        return (
+          <Card.Text key={outerComment.id}>
+            <span className="font-weight-bold">{outerComment.CommentUser}</span>
+            &nbsp;
+            <span>{outerComment.CommentText}</span>
+          </Card.Text>
+        );
+      });
+      const viewAllComments = (
+        <a
+          href="/"
+          key={0}
+          onClick={() => {
+            console.log("hi");
+          }}
+        >
+          View all&nbsp;
+          {numberOfComments === 1
+            ? "1 comment"
+            : `${numberOfComments} comments`}
+        </a>
+      );
+      outerComments = [viewAllComments, ...commentsList];
+    }
+    // comment component
+    const addAComment = (
+      <Row>
+        <Col xs={10}>
+          <input
+            type="text"
+            placeholder="Add a comment..."
+            value={commentText}
+            onChange={(e) =>
+              this.setState({
+                commentText: e.target.value,
+              })
+            }
+          />
+        </Col>
+        <Col xs={2}>
+          <Button
+            style={{ opacity: commentText ? 1 : 0.5 }}
+            id="post-button"
+            className="float-right"
+            variant="link"
+          >
+            Post
+          </Button>
+        </Col>
+      </Row>
+    );
     return (
       <Card>
         <Card.Body id="username-container">
@@ -59,8 +125,13 @@ export class Post extends Component {
             &nbsp;
             <span>{this.state.PostDesc}</span>
           </Card.Text>
-          {/* <Button variant="primary">Go somewhere</Button> */}
+
+          {outerComments}
+          <Card.Text style={{ color: "grey" }}>{this.state.PostTime}</Card.Text>
         </Card.Body>
+        <ListGroup className="list-group-flush">
+          <ListGroupItem className="add-a-comment">{addAComment}</ListGroupItem>
+        </ListGroup>
       </Card>
     );
   }

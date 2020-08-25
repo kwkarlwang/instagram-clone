@@ -12,3 +12,17 @@
 p {
   margin-bottom: 0 !important;
 }
+input {
+  border: none;
+  border-color: transparent;
+  outline: none;
+  width: 100%;
+}
+
+.add-a-comment {
+  padding: 8px 12px !important;
+}
+#post-button {
+  padding: 0;
+  text-decoration: none;
+}
