@@ -1,0 +1,14 @@
+.username {
+  font-weight: 700;
+}
+#username-container {
+  padding: 10px;
+}
+
+#text-container {
+  padding: 10px;
+}
+.icons {
+  font-size: 1.5rem;
+  margin-right: 15px;
+}
