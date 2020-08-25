@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { Card, Button, Image, Row, Col } from "react-bootstrap";
-import { Heart, ThreeDots, ChatRight, BoxArrowUp } from "react-bootstrap-icons";
+import {
+  Heart,
+  ThreeDots,
+  ChatRight,
+  BoxArrowUp,
+  Bookmark,
+} from "react-bootstrap-icons";
 import donut_logo from "../assets/donut.svg";
 import "./Post.css";
 export class Post extends Component {
@@ -26,7 +32,14 @@ export class Post extends Component {
           <div className="align-middle">
             <Heart className="icons"></Heart>
             <ChatRight className="icons"></ChatRight>
-            <BoxArrowUp style={{paddingDown: "1r"}} className="icons"></BoxArrowUp>
+            <BoxArrowUp
+              style={{ marginBottom: "0.3rem" }}
+              className="icons"
+            ></BoxArrowUp>
+            <Bookmark
+              style={{ marginRight: 0 }}
+              className="icons float-right"
+            ></Bookmark>
           </div>
           <Card.Text>
             Some quick example text to build on the card title and make up the
