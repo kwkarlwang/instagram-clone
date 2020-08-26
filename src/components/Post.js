@@ -35,8 +35,7 @@ export class Post extends Component {
     if (Comments.length) {
       let numberOfComments = 0;
       const commentsList = this.state.Comments.map((outerComment) => {
-        numberOfComments++;
-        numberOfComments += outerComment.InnerComments.length;
+        numberOfComments += outerComment.InnerComments.length + 1;
         return (
           <Card.Text key={outerComment.id}>
             <span className="font-weight-bold">{outerComment.CommentUser}</span>
@@ -77,34 +76,32 @@ export class Post extends Component {
           />
         </Col>
         <Col xs={2}>
-          <Button
-            style={{ opacity: commentText ? 1 : 0.5 }}
+          <span
+            role="button"
+            style={{ color: "blue", opacity: commentText ? 1 : 0.5 }}
             id="post-button"
             className="float-right"
             variant="link"
           >
             Post
-          </Button>
+          </span>
         </Col>
       </Row>
     );
     return (
       <Card>
         <Card.Body id="username-container">
-          <Card.Text className="font-weight-bold">
+          <Card.Text className="font-weight-bold align-middle">
             <Image
               src={donut_logo}
               roundedCircle
-              fluid
               style={{ width: "2rem", marginRight: "1rem" }}
             ></Image>
             {this.state.PostUser}
-            <span className="align-middle float-right">
-              <ThreeDots className="icons"></ThreeDots>
-            </span>
+            <ThreeDots className="icons float-right mt-1 mr-0"></ThreeDots>
           </Card.Text>
         </Card.Body>
-        <Card.Img variant="top" src="https://picsum.photos/400/300" />
+        <Card.Img variant="top" src={this.state.PostImage} />
         <Card.Body id="text-container">
           <div className="align-middle">
             <Heart className="icons"></Heart>
@@ -113,10 +110,7 @@ export class Post extends Component {
               style={{ marginBottom: "0.3rem" }}
               className="icons"
             ></BoxArrowUp>
-            <Bookmark
-              style={{ marginRight: 0 }}
-              className="icons float-right"
-            ></Bookmark>
+            <Bookmark className="icons float-right mr-0"></Bookmark>
           </div>
           {/* replace this later */}
           <Card.Text className="font-weight-bold">3 likes</Card.Text>

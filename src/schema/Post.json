@@ -2,6 +2,7 @@
   "id": 1,
   "PostUser": "user_agent",
   "PostAvatar": "https://picsum.photos/100/100",
+  "PostImage": "https://picsum.photos/400/400",
   "PostDesc": "blah blah blah",
   "PostLikes": 3,
   "PostLiked": false,
@@ -11,9 +12,11 @@
       "id": 2,
       "CommentUser": "facebook",
       "CommentAvatar": "https://picsum.photos/100/100",
-      "CommentText": "Photo looks great!",
+      "CommentText": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Possimus aperiam a esse inventore saepe quaerat suscipit reprehenderit. Hic consequuntur quisquam dignissimos vel, labore excepturi, optio repellat sed voluptate necessitatibus officia!",
+      "CommentLikes": 2,
       "CommentLiked": false,
       "CommentTime": "1 HOUR AGO",
+      "CommentExpand": false,
       "InnerComments": [
         {
           "id": 3,
@@ -21,6 +24,58 @@
           "CommentAvatar": "https://picsum.photos/100/100",
           "CommentText": "Hello",
           "CommentLiked": false,
+          "CommentLikes": 0,
+          "CommentTime": "1 HOUR AGO"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "CommentUser": "facebook",
+      "CommentAvatar": "https://picsum.photos/100/100",
+      "CommentText": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Possimus aperiam a esse inventore saepe quaerat suscipit reprehenderit. Hic consequuntur quisquam dignissimos vel, labore excepturi, optio repellat sed voluptate necessitatibus officia!",
+      "CommentLikes": 2,
+      "CommentLiked": false,
+      "CommentTime": "1 HOUR AGO",
+      "CommentExpand": false,
+      "InnerComments": [
+        {
+          "id": 5,
+          "CommentUser": "apple",
+          "CommentAvatar": "https://picsum.photos/100/100",
+          "CommentText": "Hello",
+          "CommentLiked": false,
+          "CommentLikes": 0,
+          "CommentTime": "1 HOUR AGO"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "CommentUser": "facebook",
+      "CommentAvatar": "https://picsum.photos/100/100",
+      "CommentText": "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Possimus aperiam a esse inventore saepe quaerat suscipit reprehenderit. Hic consequuntur quisquam dignissimos vel, labore excepturi, optio repellat sed voluptate necessitatibus officia!",
+      "CommentLikes": 2,
+      "CommentLiked": false,
+      "CommentTime": "1 HOUR AGO",
+      "CommentExpand": false,
+      "InnerComments": [
+        {
+          "id": 7,
+          "CommentUser": "apple",
+          "CommentAvatar": "https://picsum.photos/100/100",
+          "CommentText": "Hello",
+          "CommentLiked": false,
+          "CommentLikes": 0,
+          "CommentTime": "1 HOUR AGO"
+        },
+        {
+          "id": 8,
+          "CommentUser": "apple",
+          "CommentAvatar": "https://picsum.photos/100/100",
+          "CommentText": "Hello",
+          "CommentLiked": false,
+          "CommentLikes": 0,
           "CommentTime": "1 HOUR AGO"
         }
       ]
