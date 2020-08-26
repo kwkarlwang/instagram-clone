@@ -78,9 +78,9 @@ export class Post extends Component {
         <Col xs={2}>
           <span
             role="button"
-            style={{ color: "blue", opacity: commentText ? 1 : 0.5 }}
+            style={{ opacity: commentText ? 1 : 0.5 }}
             id="post-button"
-            className="float-right"
+            className="float-right text-primary font-weight-bold"
             variant="link"
           >
             Post

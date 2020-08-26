@@ -20,6 +20,7 @@ export class LandscapePost extends Component {
       ...MockData,
       commentText: "",
       cardHeight: 100,
+      commentText: "",
     };
   }
   componentDidMount() {
@@ -31,7 +32,14 @@ export class LandscapePost extends Component {
     });
   }
   render() {
-    const { PostImage, PostAvatar, PostUser, Comments } = this.state;
+    const {
+      PostImage,
+      PostAvatar,
+      PostUser,
+      Comments,
+      PostLikes,
+      commentText,
+    } = this.state;
     const usernameRow = (
       <Row>
         <Col xs={2}>
@@ -62,44 +70,73 @@ export class LandscapePost extends Component {
         })}
       </div>
     );
+    const likeOrLikes = PostLikes > 1 ? "likes" : "like";
+    const displayLikes = PostLikes ? `${PostLikes} ${likeOrLikes}` : "";
+
+    const addAComment = (
+      <Row>
+        <Col xs={10}>
+          <input
+            type="text"
+            placeholder="Add a comment..."
+            value={commentText}
+            onChange={(e) =>
+              this.setState({
+                commentText: e.target.value,
+              })
+            }
+          />
+        </Col>
+        <Col xs={2}>
+          <span
+            role="button"
+            style={{ color: "blue", opacity: commentText ? 1 : 0.5 }}
+            id="post-button"
+            className="float-right text-primary font-weight-bold"
+            variant="link"
+          >
+            Post
+          </span>
+        </Col>
+      </Row>
+    );
+
     return (
-      <div>
-        <Row>
-          <Col xs={7} className="px-0">
-            <Card.Img
-              ref={this.image}
-              src={PostImage}
-              onLoad={(img) => {
-                this.setState({ cardHeight: img.target.height });
-              }}
-            ></Card.Img>
-          </Col>
-          <Col xs={5} className="pl-0">
-            <Card style={{ maxHeight: this.state.cardHeight }}>
-              <Card.Header className="bg-transparent">
-                {usernameRow}
-              </Card.Header>
-              <Card.Body className="overflow-auto py-0">
-                {commentsRow}
-              </Card.Body>
-              <Card.Footer className="text-muted bg-transparent">
-                <div className="align-middle">
-                  <Heart className="icons"></Heart>
-                  <ChatRight className="icons"></ChatRight>
-                  <BoxArrowUp
-                    style={{ marginBottom: "0.3rem" }}
-                    className="icons"
-                  ></BoxArrowUp>
-                  <Bookmark className="icons float-right mr-0"></Bookmark>
-                </div>
-              </Card.Footer>
-              <Card.Footer className="text-muted bg-transparent">
-                2 days ago
-              </Card.Footer>
-            </Card>
-          </Col>
-        </Row>
-      </div>
+      <Row>
+        <Col xs={7} className="px-0">
+          <Card.Img
+            ref={this.image}
+            src={PostImage}
+            onLoad={(img) => {
+              this.setState({ cardHeight: img.target.height });
+            }}
+          ></Card.Img>
+        </Col>
+        <Col xs={5} className="pl-0">
+          <Card style={{ maxHeight: this.state.cardHeight }}>
+            <Card.Header className="bg-transparent">{usernameRow}</Card.Header>
+            <Card.Body className="overflow-auto py-0">{commentsRow}</Card.Body>
+            <Card.Footer className="text-muted bg-transparent">
+              <div className="align-middle">
+                <Heart className="icons"></Heart>
+                <ChatRight className="icons"></ChatRight>
+                <BoxArrowUp
+                  style={{ marginBottom: "0.3rem" }}
+                  className="icons"
+                ></BoxArrowUp>
+                <Bookmark className="icons float-right mr-0"></Bookmark>
+              </div>
+              <div className="font-weight-bold text-body">{displayLikes}</div>
+              <div className="font-small text-muted">
+                <small>2 HOURS AGO</small>
+              </div>
+            </Card.Footer>
+            <Card.Footer className="text-muted bg-transparent">
+              {addAComment}
+            </Card.Footer>
+          </Card>
+        </Col>
+      </Row>
     );
   }
 }
