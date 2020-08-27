@@ -61,16 +61,19 @@ export class Comment extends Component {
     return (
       <div className="d-flex w-100">
         <div className="d-flex flex-column w-100">
+          {/* username and comments */}
           <div>
             <span className="font-weight-bold">{commentUser} </span>
             <span>{commentText}</span>
           </div>
+          {/* time, number of likes, and reply */}
           <div className="d-flex">
             {displayCommentTime}
             {displayLikes}
             {replyButton}
           </div>
         </div>
+        {/* the like button */}
         <div className="ml-auto">{this.createHeart(comment)}</div>
       </div>
     );
@@ -93,6 +96,7 @@ export class Comment extends Component {
     ) : (
       ""
     );
+    // inner comments list
     const innerCommentsList = expanded
       ? innerComments.map((innerComment) => {
           return (
@@ -116,6 +120,7 @@ export class Comment extends Component {
       : "";
     return (
       <div className="d-flex align-content-center my-2">
+        {/* comment avatar */}
         <div className="pr-3">
           <Image src={commentAvatar} roundedCircle className="avatar"></Image>
         </div>

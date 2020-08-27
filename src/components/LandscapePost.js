@@ -36,6 +36,7 @@ export class LandscapePost extends Component {
     this.inputRef = React.createRef();
   }
   componentDidMount() {
+    // populate redux store
     this.props.getComments();
     this.props.getPost();
     // handle resize
@@ -47,6 +48,7 @@ export class LandscapePost extends Component {
   }
   onSubmit = () => {
     let newComment = {};
+    // if not inner comment, add to outer comments
     if (!this.state.isInnerComment) {
       newComment = {
         id: uuid(),
@@ -79,6 +81,7 @@ export class LandscapePost extends Component {
     });
   };
   onReplyButton = (commentId, replyUser) => {
+    // reply populates the @username
     this.setState({
       commentText: `@${replyUser} `,
       isInnerComment: true,
@@ -86,8 +89,8 @@ export class LandscapePost extends Component {
     });
     this.inputRef.current.focus();
   };
-
   onLikeComment = (commentId, innerCommentId) => {
+    // liked a inner comment
     if (commentId !== innerCommentId) {
       this.props.likeInnerComment(commentId, innerCommentId);
     } else {
@@ -106,7 +109,6 @@ export class LandscapePost extends Component {
       postLikes,
       postLiked,
       postTime,
-      id,
     } = this.props.post;
     const { comments } = this.props;
     const { commentText, cardHeight } = this.state;
@@ -135,12 +137,7 @@ export class LandscapePost extends Component {
     const postComment = (
       <div className="d-flex align-content-center my-2">
         <div className="pr-3">
-          <Image
-            src={postAvatar}
-            roundedCircle
-            fluid
-            className="avatar"
-          ></Image>
+          <Image src={postAvatar} roundedCircle className="avatar"></Image>
         </div>
         <div className="my-auto">
           <span className="font-weight-bold">{postUser} </span>
@@ -167,7 +164,7 @@ export class LandscapePost extends Component {
     );
     const likeOrLikes = postLikes > 1 ? "likes" : "like";
     const displayLikes = postLikes ? `${postLikes} ${likeOrLikes}` : "";
-
+    // post form
     const addAComment = (
       <div className="d-flex">
         <div className="w-100">
@@ -200,22 +197,27 @@ export class LandscapePost extends Component {
 
     return (
       <Row className="no-gutters">
-        <Col sm={12} md={7} className="px-0">
+        {/* handle resize */}
+        <Col sm={12} md={7}>
           <Card.Img
             ref={this.image}
             src={postImage}
             onDoubleClick={() => (!postLiked ? this.onLike() : null)}
+            // image determines card height
             onLoad={(img) => {
               this.setState({ cardHeight: img.target.height });
             }}
           ></Card.Img>
         </Col>
-        <Col sm={12} md={5} className="pl-0">
+        <Col sm={12} md={5}>
           <Card style={{ minHeight: cardHeight, maxHeight: cardHeight }}>
+            {/* display username and avatar */}
             <Card.Header className="bg-transparent">{usernameRow}</Card.Header>
+            {/* display comments, handle overflow */}
             <Card.Body className="overflow-auto py-0">{commentsRow}</Card.Body>
+            {/* display icons */}
             <Card.Footer className="text-muted bg-transparent">
-              <div className="align-middle">
+              <div>
                 {postLiked ? (
                   <HeartFill
                     role="button"
@@ -245,6 +247,7 @@ export class LandscapePost extends Component {
                 <small>{timeString}</small>
               </div>
             </Card.Footer>
+            {/* display post input */}
             <Card.Footer className="text-muted bg-transparent">
               {addAComment}
             </Card.Footer>

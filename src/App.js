@@ -9,7 +9,7 @@ import store from "./store";
 function App() {
   return (
     <Provider store={store}>
-      <Container style={{ paddingTop: 10, paddingBottom: 10 }}>
+      <Container className="my-5">
         <Router>
           <Route exact path="/" component={ProtraitWrapper}></Route>
           <Route exact path="/:id" component={LandscapePost}></Route>

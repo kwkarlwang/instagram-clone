@@ -26,6 +26,7 @@ export class Post extends Component {
     this.props.getComments();
   }
   onSubmit = () => {
+    // send to redux
     const newComment = {
       id: uuid(),
       commentUser: User.username,
@@ -50,8 +51,10 @@ export class Post extends Component {
     const { commentText } = this.state;
     let outerComments = [];
     if (comments.length) {
+      // find the total amount of comments (including inner comments)
       const reducer = (acc, comment) => acc + 1 + comment.innerComments.length;
       let numberOfComments = comments.reduce(reducer, 0);
+      // show the most recent two
       const commentsList = comments.slice(-2).map((outerComment) => {
         return (
           <Card.Text key={outerComment.id}>
@@ -78,7 +81,7 @@ export class Post extends Component {
 
     const likeOrLikes = post.postLikes > 1 ? "likes" : "like";
     const likeString = post.postLikes ? `${post.postLikes} ${likeOrLikes}` : "";
-    // comment component
+    // comment form component
     const addAComment = (
       <div className="d-flex">
         <div className="w-100">
@@ -106,8 +109,8 @@ export class Post extends Component {
         </div>
       </div>
     );
-
-    let timeString = createTimeString(post.postTime);
+    // the time the post is created
+    const timeString = createTimeString(post.postTime);
     return (
       <Card>
         <Card.Body id="username-container">
@@ -117,13 +120,15 @@ export class Post extends Component {
             <ThreeDots className="icons float-right mt-1 mr-0"></ThreeDots>
           </Card.Text>
         </Card.Body>
+        {/* post image here */}
         <Card.Img
           variant="top"
           src={post.postImage}
           onDoubleClick={() => (!post.postLiked ? this.onLike() : null)}
         />
         <Card.Body id="text-container">
-          <div className="align-middle">
+          {/* icons row */}
+          <div>
             {post.postLiked ? (
               <HeartFill
                 role="button"
@@ -137,7 +142,7 @@ export class Post extends Component {
                 className="icons"
               ></Heart>
             )}
-            <a href={`${post.id}`} className="text-body">
+            <a href={`/${post.id}`} className="text-body">
               <ChatRight className="icons"></ChatRight>
             </a>
             <BoxArrowUp
@@ -146,18 +151,22 @@ export class Post extends Component {
             ></BoxArrowUp>
             <Bookmark className="icons float-right mr-0"></Bookmark>
           </div>
-          {/* replace this later */}
+          {/* display amount of likes */}
           <Card.Text className="font-weight-bold">{likeString}</Card.Text>
+          {/* display post descrption */}
           <Card.Text>
             <span className="font-weight-bold">{post.postUser}</span>
             &nbsp;
             <span>{post.postDesc}</span>
           </Card.Text>
+          {/* show at most two comments */}
           {outerComments}
+          {/* display the post time*/}
           <Card.Text className="text-muted">
             <small>{timeString}</small>
           </Card.Text>
         </Card.Body>
+        {/* display post form */}
         <ListGroup className="list-group-flush">
           <ListGroupItem className="add-a-comment">{addAComment}</ListGroupItem>
         </ListGroup>
