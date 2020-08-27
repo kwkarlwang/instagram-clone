@@ -21,8 +21,8 @@ import { getPost, likePost } from "../actions/postActions";
 import { connect } from "react-redux";
 import { v4 as uuid } from "uuid";
 import PropTypes from "prop-types";
-import { createTimeString } from "../helpers/time";
-
+import { createTimeString, createCommentTimeString } from "../helpers/time";
+import "./LandscapePost.css";
 export class LandscapePost extends Component {
   constructor(props) {
     super(props);
@@ -99,40 +99,60 @@ export class LandscapePost extends Component {
   };
   render() {
     const {
+      postDesc,
       postImage,
       postAvatar,
       postUser,
       postLikes,
       postLiked,
       postTime,
+      id,
     } = this.props.post;
     const { comments } = this.props;
     const { commentText, cardHeight } = this.state;
     const usernameRow = (
-      <Row>
-        <Col xs={2}>
+      <div className="d-flex align-content-center">
+        <div className="pr-3">
           <Image
             src={postAvatar}
             roundedCircle
-            style={{ width: "2rem", marginRight: "1rem" }}
+            fluid
+            className="avatar"
           ></Image>
-        </Col>
-        <Col>
-          <Row>
-            <Col xs={10} className="px-0">
-              <span className="font-weight-bold align-middle">
-                {postUser} · Following
-              </span>
-            </Col>
-            <Col xs={2}>
-              <ThreeDots className="icons float-right mt-1 mr-0"></ThreeDots>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+        </div>
+        <div className="my-auto">
+          <span className="font-weight-bold align-text-bottom">
+            {postUser} · Following
+          </span>
+        </div>
+        <div className="ml-auto my-auto">
+          <ThreeDots className="icons float-right mr-0"></ThreeDots>
+        </div>
+      </div>
+    );
+
+    const postTimeString = createCommentTimeString(postTime);
+    const postComment = (
+      <div className="d-flex align-content-center my-2">
+        <div className="pr-3">
+          <Image
+            src={postAvatar}
+            roundedCircle
+            fluid
+            className="avatar"
+          ></Image>
+        </div>
+        <div className="my-auto">
+          <span className="font-weight-bold">{postUser} </span>
+          <span>{postDesc}</span>
+          <br />
+          <span className="mr-2 text-muted">{postTimeString}</span>
+        </div>
+      </div>
     );
     const commentsRow = (
       <div className="overflow-scroll">
+        {postComment}
         {comments.map((outerComment) => {
           return (
             <Comment
@@ -149,8 +169,8 @@ export class LandscapePost extends Component {
     const displayLikes = postLikes ? `${postLikes} ${likeOrLikes}` : "";
 
     const addAComment = (
-      <Row>
-        <Col xs={10}>
+      <div className="d-flex">
+        <div className="w-100">
           <input
             type="text"
             placeholder="Add a comment..."
@@ -162,8 +182,8 @@ export class LandscapePost extends Component {
               })
             }
           />
-        </Col>
-        <Col xs={2}>
+        </div>
+        <div className="ml-auto">
           <span
             role="button"
             style={{ color: "blue", opacity: commentText ? 1 : 0.5 }}
@@ -173,14 +193,14 @@ export class LandscapePost extends Component {
           >
             Post
           </span>
-        </Col>
-      </Row>
+        </div>
+      </div>
     );
-    let timeString = createTimeString(postTime);
+    const timeString = createTimeString(postTime);
 
     return (
-      <Row>
-        <Col xs={7} className="px-0">
+      <Row className="no-gutters">
+        <Col sm={12} md={7} className="px-0">
           <Card.Img
             ref={this.image}
             src={postImage}
@@ -190,7 +210,7 @@ export class LandscapePost extends Component {
             }}
           ></Card.Img>
         </Col>
-        <Col xs={5} className="pl-0">
+        <Col sm={12} md={5} className="pl-0">
           <Card style={{ minHeight: cardHeight, maxHeight: cardHeight }}>
             <Card.Header className="bg-transparent">{usernameRow}</Card.Header>
             <Card.Body className="overflow-auto py-0">{commentsRow}</Card.Body>

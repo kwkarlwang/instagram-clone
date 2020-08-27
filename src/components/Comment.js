@@ -1,38 +1,56 @@
 import React, { Component } from "react";
-import { Image, Row, Col } from "react-bootstrap";
+import { Image } from "react-bootstrap";
 import { Heart, HeartFill } from "react-bootstrap-icons";
 import { createCommentTimeString } from "../helpers/time";
+import "./Comment.css";
 
 export class Comment extends Component {
   constructor(props) {
     super(props);
     this.state = { expanded: false };
   }
+  createHeart = (comment) => {
+    const { id, commentLiked } = comment;
+    return (
+      <div className="mt-2">
+        {commentLiked ? (
+          <HeartFill
+            style={{ fontSize: "1rem" }}
+            onClick={() => this.props.onLikeComment(this.props.data.id, id)}
+            className="text-danger float-right"
+          ></HeartFill>
+        ) : (
+          <Heart
+            style={{ fontSize: "1rem" }}
+            className="float-right"
+            onClick={() => this.props.onLikeComment(this.props.data.id, id)}
+          ></Heart>
+        )}
+      </div>
+    );
+  };
   createComment = (comment) => {
-    const {
-      id,
-      commentText,
-      commentUser,
-      commentTime,
-      commentLikes,
-      commentLiked,
-    } = comment;
+    const { commentText, commentUser, commentTime, commentLikes } = comment;
     const commentTimeString = createCommentTimeString(commentTime);
     const displayCommentTime = (
-      <span className="mr-2 text-muted">{commentTimeString}</span>
+      <div className="mr-3">
+        <span className="text-muted">{commentTimeString}</span>
+      </div>
     );
     const likeOrLikes = commentLikes > 1 ? "likes" : "like";
     const displayLikes = commentLikes ? (
-      <span className="mr-2 font-weight-bold text-muted">
-        {commentLikes} {likeOrLikes}
-      </span>
+      <div className="mr-3">
+        <span className="font-weight-bold text-muted">
+          {commentLikes} {likeOrLikes}
+        </span>
+      </div>
     ) : (
       ""
     );
     const replyButton = (
       <span
         role="button"
-        className="mr-2 font-weight-bold text-muted"
+        className="font-weight-bold text-muted"
         onClick={() =>
           this.props.onReplyButton(this.props.data.id, commentUser)
         }
@@ -41,35 +59,24 @@ export class Comment extends Component {
       </span>
     );
     return (
-      <Row key={id}>
-        <Col xs={11} className="px-0 mx-0">
-          <span className="font-weight-bold">{commentUser} </span>
-          <span>{commentText}</span>
-          <br />
-          {displayCommentTime}
-          {displayLikes}
-          {replyButton}
-        </Col>
-        <Col xs={1} className="px-0">
-          {commentLiked ? (
-            <HeartFill
-              style={{ fontSize: "1rem" }}
-              onClick={() => this.props.onLikeComment(this.props.data.id, id)}
-              className="icons text-danger mr-0"
-            ></HeartFill>
-          ) : (
-            <Heart
-              style={{ fontSize: "1rem" }}
-              className="icons mr-0"
-              onClick={() => this.props.onLikeComment(this.props.data.id, id)}
-            ></Heart>
-          )}
-        </Col>
-      </Row>
+      <div className="d-flex w-100">
+        <div className="d-flex flex-column w-100">
+          <div>
+            <span className="font-weight-bold">{commentUser} </span>
+            <span>{commentText}</span>
+          </div>
+          <div className="d-flex">
+            {displayCommentTime}
+            {displayLikes}
+            {replyButton}
+          </div>
+        </div>
+        <div className="ml-auto">{this.createHeart(comment)}</div>
+      </div>
     );
   };
   render() {
-    const { innerComments, commentAvatar } = this.props.data;
+    const { commentAvatar, innerComments } = this.props.data;
     const { expanded } = this.state;
     const replyOrReplies = innerComments.length > 1 ? "replies" : "reply";
     const viewReplyString = expanded
@@ -89,36 +96,35 @@ export class Comment extends Component {
     const innerCommentsList = expanded
       ? innerComments.map((innerComment) => {
           return (
-            <Row key={innerComment.id} className="my-2">
-              <Col xs={2} className="pr-0">
+            <div
+              key={innerComment.id}
+              className="d-flex align-content-center my-2"
+            >
+              <div className="pr-3">
                 <Image
                   src={innerComment.commentAvatar}
                   roundedCircle
-                  style={{ width: "2rem" }}
+                  className="avatar"
                 ></Image>
-              </Col>
-              <Col>{this.createComment(innerComment)}</Col>
-            </Row>
+              </div>
+              <div className="d-flex w-100">
+                {this.createComment(innerComment)}
+              </div>
+            </div>
           );
         })
       : "";
-
     return (
-      <Row className="my-2">
-        <Col xs={2} className="pr-0">
-          <Image
-            src={commentAvatar}
-            roundedCircle
-            style={{ width: "2rem" }}
-          ></Image>
-        </Col>
-        <Col>
+      <div className="d-flex align-content-center my-2">
+        <div className="pr-3">
+          <Image src={commentAvatar} roundedCircle className="avatar"></Image>
+        </div>
+        <div className="w-100">
           {this.createComment(this.props.data)}
-          {/* insert inner comments here */}
-          <Row className="my-2">{viewReplies}</Row>
+          {viewReplies}
           {innerCommentsList}
-        </Col>
-      </Row>
+        </div>
+      </div>
     );
   }
 }

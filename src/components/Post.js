@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  Card,
-  Image,
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem,
-} from "react-bootstrap";
+import { Card, Image, ListGroup, ListGroupItem } from "react-bootstrap";
 import {
   HeartFill,
   Heart,
@@ -87,8 +80,8 @@ export class Post extends Component {
     const likeString = post.postLikes ? `${post.postLikes} ${likeOrLikes}` : "";
     // comment component
     const addAComment = (
-      <Row>
-        <Col xs={10}>
+      <div className="d-flex">
+        <div className="w-100">
           <input
             type="text"
             placeholder="Add a comment..."
@@ -99,20 +92,19 @@ export class Post extends Component {
               })
             }
           />
-        </Col>
-        <Col xs={2}>
+        </div>
+        <div className="ml-auto">
           <span
             role="button"
-            style={{ opacity: commentText ? 1 : 0.5 }}
+            style={{ color: "blue", opacity: commentText ? 1 : 0.5 }}
             id="post-button"
             className="float-right text-primary font-weight-bold"
             onClick={this.onSubmit}
-            variant="link"
           >
             Post
           </span>
-        </Col>
-      </Row>
+        </div>
+      </div>
     );
 
     let timeString = createTimeString(post.postTime);
@@ -120,12 +112,8 @@ export class Post extends Component {
       <Card>
         <Card.Body id="username-container">
           <Card.Text className="font-weight-bold align-middle">
-            <Image
-              src={post.postAvatar}
-              roundedCircle
-              style={{ width: "2rem", marginRight: "1rem" }}
-            ></Image>
-            {post.postUser}
+            <Image src={post.postAvatar} roundedCircle id="avatar"></Image>
+            <span className="ml-2">{post.postUser}</span>
             <ThreeDots className="icons float-right mt-1 mr-0"></ThreeDots>
           </Card.Text>
         </Card.Body>

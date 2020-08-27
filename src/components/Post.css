@@ -6,7 +6,7 @@
   padding: 10px;
 }
 .icons {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   margin-right: 15px;
 }
 p {
@@ -25,4 +25,8 @@ input {
 #post-button {
   padding: 0;
   text-decoration: none;
+}
+
+#avatar {
+  width: 2.4rem;
 }
