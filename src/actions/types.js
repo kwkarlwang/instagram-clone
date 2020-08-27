@@ -1,0 +1,3 @@
+export const GET_COMMENTS = "GET_COMMENTS"
+export const ADD_COMMENT = "ADD_COMMENT"
+export const ADD_INNERCOMMENT = "ADD_INNERCOMMENT"

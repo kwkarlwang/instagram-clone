@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   Card,
-  Button,
   Image,
   Row,
   Col,
@@ -18,6 +17,11 @@ import {
 import donut_logo from "../assets/donut.svg";
 import "./Post.css";
 import MockData from "../schema/Post.json";
+import { connect } from "react-redux";
+import { getComments, addComment } from "../actions/commentActions";
+import PropTypes from "prop-types";
+import { v4 as uuid } from "uuid";
+
 export class Post extends Component {
   constructor(props) {
     super(props);
@@ -27,31 +31,43 @@ export class Post extends Component {
     };
   }
   componentDidMount() {
-    // this.setState({ ...MockData });
+    this.props.getComments();
   }
+  onSubmit = () => {
+    const newComment = {
+      id: uuid(),
+      commentUser: "me",
+      commentAvatar: "https://picsum.photos/100/100",
+      commentText: this.state.commentText,
+      commentLikes: 0,
+      commentLiked: false,
+      commentTime: new Date(),
+      innerComments: [],
+    };
+    this.props.addComment(newComment);
+    this.setState({
+      commentText: "",
+    });
+  };
   render() {
-    const { Comments, commentText } = this.state;
+    const { comments } = this.props;
+    const { commentText } = this.state;
     let outerComments = [];
-    if (Comments.length) {
-      let numberOfComments = 0;
-      const commentsList = this.state.Comments.map((outerComment) => {
-        numberOfComments += outerComment.InnerComments.length + 1;
+    if (comments.length) {
+      const reducer = (acc, comment) => acc + 1 + comment.innerComments.length;
+      let numberOfComments = comments.reduce(reducer, 0);
+      console.log(numberOfComments);
+      const commentsList = comments.slice(-2).map((outerComment) => {
         return (
           <Card.Text key={outerComment.id}>
-            <span className="font-weight-bold">{outerComment.CommentUser}</span>
+            <span className="font-weight-bold">{outerComment.commentUser}</span>
             &nbsp;
-            <span>{outerComment.CommentText}</span>
+            <span>{outerComment.commentText}</span>
           </Card.Text>
         );
       });
       const viewAllComments = (
-        <a
-          href="/"
-          key={0}
-          onClick={() => {
-            console.log("hi");
-          }}
-        >
+        <a href="/1" key={0} onClick={() => {}}>
           View all&nbsp;
           {numberOfComments === 1
             ? "1 comment"
@@ -81,6 +97,7 @@ export class Post extends Component {
             style={{ opacity: commentText ? 1 : 0.5 }}
             id="post-button"
             className="float-right text-primary font-weight-bold"
+            onClick={this.onSubmit}
             variant="link"
           >
             Post
@@ -119,7 +136,6 @@ export class Post extends Component {
             &nbsp;
             <span>{this.state.PostDesc}</span>
           </Card.Text>
-
           {outerComments}
           <Card.Text style={{ color: "grey" }}>{this.state.PostTime}</Card.Text>
         </Card.Body>
@@ -131,4 +147,14 @@ export class Post extends Component {
   }
 }
 
-export default Post;
+Post.propTypes = {
+  getComments: PropTypes.func.isRequired,
+  addComment: PropTypes.func.isRequired,
+  comments: PropTypes.array.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  comments: state.comments,
+});
+
+export default connect(mapStateToProps, { getComments, addComment })(Post);

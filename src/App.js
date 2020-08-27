@@ -1,17 +1,21 @@
 import React from "react";
 import Post from "./components/Post";
 import "bootstrap/dist/css/bootstrap.css";
-import { Container, Card, Button, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import LandscapePost from "./components/LandscapePost";
+import { Provider } from "react-redux";
+import store from "./store";
 function App() {
   return (
-    <Container style={{ paddingTop: 10, paddingBottom: 10 }}>
-      <Router>
-        <Route exact path="/" component={ProtraitWrapper}></Route>
-        <Route exact path="/:id" component={LandscapeWrapper}></Route>
-      </Router>
-    </Container>
+    <Provider store={store}>
+      <Container style={{ paddingTop: 10, paddingBottom: 10 }}>
+        <Router>
+          <Route exact path="/" component={ProtraitWrapper}></Route>
+          <Route exact path="/:id" component={LandscapePost}></Route>
+        </Router>
+      </Container>
+    </Provider>
   );
 }
 
@@ -27,7 +31,4 @@ function ProtraitWrapper() {
       <Col xs={2}></Col>
     </Row>
   );
-}
-function LandscapeWrapper() {
-  return <LandscapePost></LandscapePost>;
 }

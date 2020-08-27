@@ -142,3 +142,4 @@ export class LandscapePost extends Component {
 }
 
 export default LandscapePost;
+
