@@ -26,7 +26,13 @@ export class Comment extends Component {
       ""
     );
     const replyButton = (
-      <span role="button" className="mr-2 font-weight-bold text-muted">
+      <span
+        role="button"
+        className="mr-2 font-weight-bold text-muted"
+        onClick={() =>
+          this.props.onReplyButton(this.props.data.id, commentUser)
+        }
+      >
         Reply
       </span>
     );
@@ -44,14 +50,14 @@ export class Comment extends Component {
           {commentLiked ? (
             <HeartFill
               style={{ fontSize: "1rem" }}
-              onClick={() => this.props.onLikeComment(id)}
+              onClick={() => this.props.onLikeComment(this.props.data.id, id)}
               className="icons text-danger mr-0"
             ></HeartFill>
           ) : (
             <Heart
               style={{ fontSize: "1rem" }}
               className="icons mr-0"
-              onClick={() => this.props.onLikeComment(id)}
+              onClick={() => this.props.onLikeComment(this.props.data.id, id)}
             ></Heart>
           )}
         </Col>
@@ -82,7 +88,7 @@ export class Comment extends Component {
             <Row key={innerComment.id} className="my-2">
               <Col xs={2} className="pr-0">
                 <Image
-                  src={innerComment.CommentAvatar}
+                  src={innerComment.commentAvatar}
                   roundedCircle
                   style={{ width: "2rem" }}
                 ></Image>

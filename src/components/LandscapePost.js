@@ -15,6 +15,7 @@ import {
   addComment,
   addInnerComment,
   likeComment,
+  likeInnerComment,
 } from "../actions/commentActions";
 import { getPost, likePost } from "../actions/postActions";
 import { connect } from "react-redux";
@@ -27,9 +28,11 @@ export class LandscapePost extends Component {
     this.image = React.createRef();
     this.state = {
       isInnerComment: false,
+      currentCommentId: "",
       commentText: "",
       cardHeight: 100,
     };
+    this.inputRef = React.createRef();
   }
   componentDidMount() {
     this.props.getComments();
@@ -54,19 +57,41 @@ export class LandscapePost extends Component {
         commentTime: new Date(),
         innerComments: [],
       };
+      this.props.addComment(newComment);
+    } else {
+      newComment = {
+        id: uuid(),
+        commentUser: User.username,
+        commentAvatar: User.avatar,
+        commentText: this.state.commentText,
+        commentLikes: 0,
+        commentLiked: false,
+        commentTime: new Date(),
+      };
+      this.props.addInnerComment(this.state.currentCommentId, newComment);
     }
-    this.props.addComment(newComment);
     // clear the text
     this.setState({
       commentText: "",
+      isInnerComment: false,
+      currentCommentId: "",
     });
   };
-  onLikeInnerComment = (commentId, innerCommentId)=>{
+  onReplyButton = (commentId, replyUser) => {
+    this.setState({
+      commentText: `@${replyUser} `,
+      isInnerComment: true,
+      currentCommentId: commentId,
+    });
+    this.inputRef.current.focus();
+  };
 
-  }
-
-  onLikeComment = (commentId) => {
-    this.props.likeComment(commentId);
+  onLikeComment = (commentId, innerCommentId) => {
+    if (commentId !== innerCommentId) {
+      this.props.likeInnerComment(commentId, innerCommentId);
+    } else {
+      this.props.likeComment(commentId);
+    }
   };
   onLike = () => {
     this.props.likePost();
@@ -112,6 +137,7 @@ export class LandscapePost extends Component {
               key={outerComment.id}
               data={outerComment}
               onLikeComment={this.onLikeComment}
+              onReplyButton={this.onReplyButton}
             ></Comment>
           );
         })}
@@ -127,6 +153,7 @@ export class LandscapePost extends Component {
             type="text"
             placeholder="Add a comment..."
             value={commentText}
+            ref={this.inputRef}
             onChange={(e) =>
               this.setState({
                 commentText: e.target.value,
@@ -174,7 +201,10 @@ export class LandscapePost extends Component {
                 ) : (
                   <Heart onClick={this.onLike} className="icons"></Heart>
                 )}
-                <ChatRight className="icons"></ChatRight>
+                <ChatRight
+                  className="icons"
+                  onClick={() => this.inputRef.current.focus()}
+                ></ChatRight>
                 <BoxArrowUp
                   style={{ marginBottom: "0.3rem" }}
                   className="icons"
@@ -202,6 +232,7 @@ LandscapePost.propTypes = {
   likePost: PropTypes.func.isRequired,
   likeComment: PropTypes.func.isRequired,
   addInnerComment: PropTypes.func.isRequired,
+  likeInnerComment: PropTypes.func.isRequired,
   comments: PropTypes.array.isRequired,
   post: PropTypes.object.isRequired,
 };
@@ -215,6 +246,7 @@ export default connect(mapStateToProps, {
   getComments,
   addComment,
   addInnerComment,
+  likeInnerComment,
   getPost,
   likePost,
   likeComment,

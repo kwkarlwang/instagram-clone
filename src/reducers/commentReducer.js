@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
     case ADD_INNERCOMMENT:
       return state.map((comment) => {
         if (comment.id === action.payload.commentId) {
-          comment.InnerComments.push(action.payload.innerComment);
+          comment.innerComments.push(action.payload.innerComment);
         }
         return comment;
       });
@@ -42,7 +42,7 @@ export default (state = initialState, action) => {
     case LIKE_INNERCOMMENT:
       return state.map((comment) => {
         if (comment.id === action.payload.commentId) {
-          comment.innerComment = comment.map((innerComment) => {
+          comment.innerComments = comment.innerComments.map((innerComment) => {
             if (innerComment.id === action.payload.innerCommentId) {
               return action.payload.innerComment;
             }

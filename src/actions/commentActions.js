@@ -60,8 +60,9 @@ export const likeComment = (commentId) => (dispatch) => {
 
 export const likeInnerComment = (commentId, innerCommentId) => (dispatch) => {
   const comments = JSON.parse(localStorage.getItem("comments"));
+  console.log(comments);
   const comment = comments.find((comment) => comment.id === commentId);
-  const innerComment = comment.find(
+  const innerComment = comment.innerComments.find(
     (innerComment) => innerComment.id === innerCommentId
   );
   innerComment.commentLiked = !innerComment.commentLiked;
