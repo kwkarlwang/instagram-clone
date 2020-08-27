@@ -1,3 +1,10 @@
-export const GET_COMMENTS = "GET_COMMENTS"
-export const ADD_COMMENT = "ADD_COMMENT"
-export const ADD_INNERCOMMENT = "ADD_INNERCOMMENT"
+// COMMENTS
+export const GET_COMMENTS = "GET_COMMENTS";
+export const ADD_COMMENT = "ADD_COMMENT";
+export const ADD_INNERCOMMENT = "ADD_INNERCOMMENT";
+export const LIKE_COMMENT = "LIKE_COMMENT";
+export const LIKE_INNERCOMMENT = "LIKE_INNERCOMMENT";
+
+// POST
+export const LIKE_POST = "LIKE_POST";
+export const GET_POST = "GET_POST";

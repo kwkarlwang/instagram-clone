@@ -1,4 +1,10 @@
-import { GET_COMMENTS, ADD_COMMENT, ADD_INNERCOMMENT } from "../actions/types";
+import {
+  GET_COMMENTS,
+  ADD_COMMENT,
+  ADD_INNERCOMMENT,
+  LIKE_COMMENT,
+  LIKE_INNERCOMMENT,
+} from "../actions/types";
 
 // const initialState = {
 //   id: 1,
@@ -20,9 +26,28 @@ export default (state = initialState, action) => {
     case ADD_COMMENT:
       return [...state, action.payload];
     case ADD_INNERCOMMENT:
-      return state.comments.map((comment) => {
+      return state.map((comment) => {
         if (comment.id === action.payload.commentId) {
           comment.InnerComments.push(action.payload.innerComment);
+        }
+        return comment;
+      });
+    case LIKE_COMMENT:
+      return state.map((comment) => {
+        if (comment.id === action.payload.commentId) {
+          return action.payload.comment;
+        }
+        return comment;
+      });
+    case LIKE_INNERCOMMENT:
+      return state.map((comment) => {
+        if (comment.id === action.payload.commentId) {
+          comment.innerComment = comment.map((innerComment) => {
+            if (innerComment.id === action.payload.innerCommentId) {
+              return action.payload.innerComment;
+            }
+            return innerComment;
+          });
         }
         return comment;
       });

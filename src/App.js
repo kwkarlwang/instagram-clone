@@ -24,11 +24,11 @@ export default App;
 function ProtraitWrapper() {
   return (
     <Row>
-      <Col xs={2}></Col>
-      <Col xs={8}>
+      <Col sm={0} md={2}></Col>
+      <Col sm={12} md={8}>
         <Post></Post>
       </Col>
-      <Col xs={2}></Col>
+      <Col sm={0} md={2}></Col>
     </Row>
   );
 }

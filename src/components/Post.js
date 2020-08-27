@@ -8,36 +8,34 @@ import {
   ListGroupItem,
 } from "react-bootstrap";
 import {
+  HeartFill,
   Heart,
   ThreeDots,
   ChatRight,
   BoxArrowUp,
   Bookmark,
 } from "react-bootstrap-icons";
-import donut_logo from "../assets/donut.svg";
 import "./Post.css";
-import MockData from "../schema/Post.json";
+import User from "../default/User.json";
 import { connect } from "react-redux";
 import { getComments, addComment } from "../actions/commentActions";
+import { getPost, likePost } from "../actions/postActions";
 import PropTypes from "prop-types";
 import { v4 as uuid } from "uuid";
 
 export class Post extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      ...MockData,
-      commentText: "",
-    };
-  }
+  state = {
+    commentText: "",
+  };
   componentDidMount() {
+    this.props.getPost();
     this.props.getComments();
   }
   onSubmit = () => {
     const newComment = {
       id: uuid(),
-      commentUser: "me",
-      commentAvatar: "https://picsum.photos/100/100",
+      commentUser: User.username,
+      commentAvatar: User.avatar,
       commentText: this.state.commentText,
       commentLikes: 0,
       commentLiked: false,
@@ -45,18 +43,21 @@ export class Post extends Component {
       innerComments: [],
     };
     this.props.addComment(newComment);
+    // clear the text
     this.setState({
       commentText: "",
     });
   };
+  onLike = () => {
+    this.props.likePost();
+  };
   render() {
-    const { comments } = this.props;
+    const { comments, post } = this.props;
     const { commentText } = this.state;
     let outerComments = [];
     if (comments.length) {
       const reducer = (acc, comment) => acc + 1 + comment.innerComments.length;
       let numberOfComments = comments.reduce(reducer, 0);
-      console.log(numberOfComments);
       const commentsList = comments.slice(-2).map((outerComment) => {
         return (
           <Card.Text key={outerComment.id}>
@@ -67,7 +68,11 @@ export class Post extends Component {
         );
       });
       const viewAllComments = (
-        <a href="/1" key={0} onClick={() => {}}>
+        <a
+          href={`/${post.id}`}
+          className="text-muted text-decoration-none"
+          key={0}
+        >
           View all&nbsp;
           {numberOfComments === 1
             ? "1 comment"
@@ -76,6 +81,9 @@ export class Post extends Component {
       );
       outerComments = [viewAllComments, ...commentsList];
     }
+
+    const likeOrLikes = post.postLikes > 1 ? "likes" : "like";
+    const likeString = post.postLikes ? `${post.postLikes} ${likeOrLikes}` : "";
     // comment component
     const addAComment = (
       <Row>
@@ -110,18 +118,29 @@ export class Post extends Component {
         <Card.Body id="username-container">
           <Card.Text className="font-weight-bold align-middle">
             <Image
-              src={donut_logo}
+              src={post.postAvatar}
               roundedCircle
               style={{ width: "2rem", marginRight: "1rem" }}
             ></Image>
-            {this.state.PostUser}
+            {post.postUser}
             <ThreeDots className="icons float-right mt-1 mr-0"></ThreeDots>
           </Card.Text>
         </Card.Body>
-        <Card.Img variant="top" src={this.state.PostImage} />
+        <Card.Img
+          variant="top"
+          src={post.postImage}
+          onDoubleClick={() => (!post.postLiked ? this.onLike() : null)}
+        />
         <Card.Body id="text-container">
           <div className="align-middle">
-            <Heart className="icons"></Heart>
+            {post.postLiked ? (
+              <HeartFill
+                onClick={this.onLike}
+                className="icons text-danger"
+              ></HeartFill>
+            ) : (
+              <Heart onClick={this.onLike} className="icons"></Heart>
+            )}
             <ChatRight className="icons"></ChatRight>
             <BoxArrowUp
               style={{ marginBottom: "0.3rem" }}
@@ -130,14 +149,14 @@ export class Post extends Component {
             <Bookmark className="icons float-right mr-0"></Bookmark>
           </div>
           {/* replace this later */}
-          <Card.Text className="font-weight-bold">3 likes</Card.Text>
+          <Card.Text className="font-weight-bold">{likeString}</Card.Text>
           <Card.Text>
-            <span className="font-weight-bold">{this.state.PostUser}</span>
+            <span className="font-weight-bold">{post.postUser}</span>
             &nbsp;
-            <span>{this.state.PostDesc}</span>
+            <span>{post.postDesc}</span>
           </Card.Text>
           {outerComments}
-          <Card.Text style={{ color: "grey" }}>{this.state.PostTime}</Card.Text>
+          <Card.Text style={{ color: "grey" }}>{post.postTime}</Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroupItem className="add-a-comment">{addAComment}</ListGroupItem>
@@ -150,11 +169,20 @@ export class Post extends Component {
 Post.propTypes = {
   getComments: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
+  getPost: PropTypes.func.isRequired,
+  likePost: PropTypes.func.isRequired,
   comments: PropTypes.array.isRequired,
+  post: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  post: state.post,
   comments: state.comments,
 });
 
-export default connect(mapStateToProps, { getComments, addComment })(Post);
+export default connect(mapStateToProps, {
+  getComments,
+  addComment,
+  getPost,
+  likePost,
+})(Post);

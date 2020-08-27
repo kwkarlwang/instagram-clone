@@ -1,27 +1,26 @@
 import React, { Component } from "react";
 import { Image, Row, Col } from "react-bootstrap";
-import { Heart } from "react-bootstrap-icons";
-import donut_logo from "../assets/donut.svg";
+import { Heart, HeartFill } from "react-bootstrap-icons";
 
 export class Comment extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...this.props.data, expanded: false };
+    this.state = { expanded: false };
   }
   createComment = (comment) => {
     const {
       id,
-      CommentText,
-      CommentUser,
-      CommentTime,
-      CommentLikes,
-      CommentLiked,
+      commentText,
+      commentUser,
+      commentTime,
+      commentLikes,
+      commentLiked,
     } = comment;
     const displayCommentTime = <span className="mr-2 text-muted">1h</span>;
-    const likeOrLikes = CommentLikes > 1 ? "likes" : "like";
-    const displayLikes = CommentLikes ? (
+    const likeOrLikes = commentLikes > 1 ? "likes" : "like";
+    const displayLikes = commentLikes ? (
       <span className="mr-2 font-weight-bold text-muted">
-        {CommentLikes} {likeOrLikes}
+        {commentLikes} {likeOrLikes}
       </span>
     ) : (
       ""
@@ -34,26 +33,39 @@ export class Comment extends Component {
     return (
       <Row key={id}>
         <Col xs={11} className="px-0 mx-0">
-          <span className="font-weight-bold">{CommentUser} </span>
-          <span>{CommentText}</span>
+          <span className="font-weight-bold">{commentUser} </span>
+          <span>{commentText}</span>
           <br />
           {displayCommentTime}
           {displayLikes}
           {replyButton}
         </Col>
         <Col xs={1} className="px-0">
-          <Heart style={{ fontSize: "1rem" }} className="icons mr-0"></Heart>
+          {commentLiked ? (
+            <HeartFill
+              style={{ fontSize: "1rem" }}
+              onClick={() => this.props.onLikeComment(id)}
+              className="icons text-danger mr-0"
+            ></HeartFill>
+          ) : (
+            <Heart
+              style={{ fontSize: "1rem" }}
+              className="icons mr-0"
+              onClick={() => this.props.onLikeComment(id)}
+            ></Heart>
+          )}
         </Col>
       </Row>
     );
   };
   render() {
-    const { InnerComments, expanded, CommentAvatar } = this.state;
-    const replyOrReplies = InnerComments.length > 1 ? "replies" : "reply";
+    const { innerComments, commentAvatar } = this.props.data;
+    const { expanded } = this.state;
+    const replyOrReplies = innerComments.length > 1 ? "replies" : "reply";
     const viewReplyString = expanded
       ? `Hide ${replyOrReplies}`
-      : `View ${InnerComments.length} ${replyOrReplies}`;
-    const viewReplies = InnerComments.length ? (
+      : `View ${innerComments.length} ${replyOrReplies}`;
+    const viewReplies = innerComments.length ? (
       <span
         role="button"
         className="text-muted font-weight-bold font-smaller px-1"
@@ -64,8 +76,8 @@ export class Comment extends Component {
     ) : (
       ""
     );
-    const InnerCommentsList = expanded
-      ? InnerComments.map((innerComment) => {
+    const innerCommentsList = expanded
+      ? innerComments.map((innerComment) => {
           return (
             <Row key={innerComment.id} className="my-2">
               <Col xs={2} className="pr-0">
@@ -85,16 +97,16 @@ export class Comment extends Component {
       <Row className="my-2">
         <Col xs={2} className="pr-0">
           <Image
-            src={CommentAvatar}
+            src={commentAvatar}
             roundedCircle
             style={{ width: "2rem" }}
           ></Image>
         </Col>
         <Col>
-          {this.createComment(this.state)}
+          {this.createComment(this.props.data)}
           {/* insert inner comments here */}
           <Row className="my-2">{viewReplies}</Row>
-          {InnerCommentsList}
+          {innerCommentsList}
         </Col>
       </Row>
     );

@@ -1,29 +1,39 @@
 import React, { Component } from "react";
-import { Card, Button, Image, Row, Col, ListGroup } from "react-bootstrap";
-import MockData from "../schema/Post.json";
+import { Card, Image, Row, Col } from "react-bootstrap";
 import {
+  HeartFill,
   Heart,
   ThreeDots,
   ChatRight,
   BoxArrowUp,
   Bookmark,
 } from "react-bootstrap-icons";
-import donut_logo from "../assets/donut.svg";
 import Comment from "./Comment";
+import User from "../default/User.json";
+import {
+  getComments,
+  addComment,
+  addInnerComment,
+  likeComment,
+} from "../actions/commentActions";
+import { getPost, likePost } from "../actions/postActions";
+import { connect } from "react-redux";
+import { v4 as uuid } from "uuid";
+import PropTypes from "prop-types";
 
 export class LandscapePost extends Component {
   constructor(props) {
     super(props);
     this.image = React.createRef();
-
     this.state = {
-      ...MockData,
+      isInnerComment: false,
       commentText: "",
       cardHeight: 100,
-      commentText: "",
     };
   }
   componentDidMount() {
+    this.props.getComments();
+    this.props.getPost();
     // handle resize
     window.addEventListener("resize", () => {
       this.setState({
@@ -31,20 +41,51 @@ export class LandscapePost extends Component {
       });
     });
   }
+  onSubmit = () => {
+    let newComment = {};
+    if (!this.state.isInnerComment) {
+      newComment = {
+        id: uuid(),
+        commentUser: User.username,
+        commentAvatar: User.avatar,
+        commentText: this.state.commentText,
+        commentLikes: 0,
+        commentLiked: false,
+        commentTime: new Date(),
+        innerComments: [],
+      };
+    }
+    this.props.addComment(newComment);
+    // clear the text
+    this.setState({
+      commentText: "",
+    });
+  };
+  onLikeInnerComment = (commentId, innerCommentId)=>{
+
+  }
+
+  onLikeComment = (commentId) => {
+    this.props.likeComment(commentId);
+  };
+  onLike = () => {
+    this.props.likePost();
+  };
   render() {
     const {
-      PostImage,
-      PostAvatar,
-      PostUser,
-      Comments,
-      PostLikes,
-      commentText,
-    } = this.state;
+      postImage,
+      postAvatar,
+      postUser,
+      postLikes,
+      postLiked,
+    } = this.props.post;
+    const { comments } = this.props;
+    const { commentText, cardHeight } = this.state;
     const usernameRow = (
       <Row>
         <Col xs={2}>
           <Image
-            src={donut_logo}
+            src={postAvatar}
             roundedCircle
             style={{ width: "2rem", marginRight: "1rem" }}
           ></Image>
@@ -53,7 +94,7 @@ export class LandscapePost extends Component {
           <Row>
             <Col xs={10} className="px-0">
               <span className="font-weight-bold align-middle">
-                {this.state.PostUser} · Following
+                {postUser} · Following
               </span>
             </Col>
             <Col xs={2}>
@@ -65,13 +106,19 @@ export class LandscapePost extends Component {
     );
     const commentsRow = (
       <div className="overflow-scroll">
-        {Comments.map((outerComment) => {
-          return <Comment key={outerComment.id} data={outerComment}></Comment>;
+        {comments.map((outerComment) => {
+          return (
+            <Comment
+              key={outerComment.id}
+              data={outerComment}
+              onLikeComment={this.onLikeComment}
+            ></Comment>
+          );
         })}
       </div>
     );
-    const likeOrLikes = PostLikes > 1 ? "likes" : "like";
-    const displayLikes = PostLikes ? `${PostLikes} ${likeOrLikes}` : "";
+    const likeOrLikes = postLikes > 1 ? "likes" : "like";
+    const displayLikes = postLikes ? `${postLikes} ${likeOrLikes}` : "";
 
     const addAComment = (
       <Row>
@@ -93,7 +140,7 @@ export class LandscapePost extends Component {
             style={{ color: "blue", opacity: commentText ? 1 : 0.5 }}
             id="post-button"
             className="float-right text-primary font-weight-bold"
-            variant="link"
+            onClick={this.onSubmit}
           >
             Post
           </span>
@@ -106,19 +153,27 @@ export class LandscapePost extends Component {
         <Col xs={7} className="px-0">
           <Card.Img
             ref={this.image}
-            src={PostImage}
+            src={postImage}
+            onDoubleClick={() => (!postLiked ? this.onLike() : null)}
             onLoad={(img) => {
               this.setState({ cardHeight: img.target.height });
             }}
           ></Card.Img>
         </Col>
         <Col xs={5} className="pl-0">
-          <Card style={{ maxHeight: this.state.cardHeight }}>
+          <Card style={{ minHeight: cardHeight, maxHeight: cardHeight }}>
             <Card.Header className="bg-transparent">{usernameRow}</Card.Header>
             <Card.Body className="overflow-auto py-0">{commentsRow}</Card.Body>
             <Card.Footer className="text-muted bg-transparent">
               <div className="align-middle">
-                <Heart className="icons"></Heart>
+                {postLiked ? (
+                  <HeartFill
+                    onClick={this.onLike}
+                    className="icons text-danger"
+                  ></HeartFill>
+                ) : (
+                  <Heart onClick={this.onLike} className="icons"></Heart>
+                )}
                 <ChatRight className="icons"></ChatRight>
                 <BoxArrowUp
                   style={{ marginBottom: "0.3rem" }}
@@ -140,6 +195,27 @@ export class LandscapePost extends Component {
     );
   }
 }
+LandscapePost.propTypes = {
+  getComments: PropTypes.func.isRequired,
+  addComment: PropTypes.func.isRequired,
+  getPost: PropTypes.func.isRequired,
+  likePost: PropTypes.func.isRequired,
+  likeComment: PropTypes.func.isRequired,
+  addInnerComment: PropTypes.func.isRequired,
+  comments: PropTypes.array.isRequired,
+  post: PropTypes.object.isRequired,
+};
 
-export default LandscapePost;
+const mapStateToProps = (state) => ({
+  post: state.post,
+  comments: state.comments,
+});
 
+export default connect(mapStateToProps, {
+  getComments,
+  addComment,
+  addInnerComment,
+  getPost,
+  likePost,
+  likeComment,
+})(LandscapePost);
