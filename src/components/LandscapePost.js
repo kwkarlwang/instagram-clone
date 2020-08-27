@@ -21,6 +21,7 @@ import { getPost, likePost } from "../actions/postActions";
 import { connect } from "react-redux";
 import { v4 as uuid } from "uuid";
 import PropTypes from "prop-types";
+import { createTimeString } from "../helpers/time";
 
 export class LandscapePost extends Component {
   constructor(props) {
@@ -103,6 +104,7 @@ export class LandscapePost extends Component {
       postUser,
       postLikes,
       postLiked,
+      postTime,
     } = this.props.post;
     const { comments } = this.props;
     const { commentText, cardHeight } = this.state;
@@ -174,6 +176,7 @@ export class LandscapePost extends Component {
         </Col>
       </Row>
     );
+    let timeString = createTimeString(postTime);
 
     return (
       <Row>
@@ -195,13 +198,19 @@ export class LandscapePost extends Component {
               <div className="align-middle">
                 {postLiked ? (
                   <HeartFill
+                    role="button"
                     onClick={this.onLike}
                     className="icons text-danger"
                   ></HeartFill>
                 ) : (
-                  <Heart onClick={this.onLike} className="icons"></Heart>
+                  <Heart
+                    role="button"
+                    onClick={this.onLike}
+                    className="icons"
+                  ></Heart>
                 )}
                 <ChatRight
+                  role="button"
                   className="icons"
                   onClick={() => this.inputRef.current.focus()}
                 ></ChatRight>
@@ -213,7 +222,7 @@ export class LandscapePost extends Component {
               </div>
               <div className="font-weight-bold text-body">{displayLikes}</div>
               <div className="font-small text-muted">
-                <small>2 HOURS AGO</small>
+                <small>{timeString}</small>
               </div>
             </Card.Footer>
             <Card.Footer className="text-muted bg-transparent">

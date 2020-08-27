@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Image, Row, Col } from "react-bootstrap";
 import { Heart, HeartFill } from "react-bootstrap-icons";
+import { createCommentTimeString } from "../helpers/time";
 
 export class Comment extends Component {
   constructor(props) {
@@ -16,7 +17,10 @@ export class Comment extends Component {
       commentLikes,
       commentLiked,
     } = comment;
-    const displayCommentTime = <span className="mr-2 text-muted">1h</span>;
+    const commentTimeString = createCommentTimeString(commentTime);
+    const displayCommentTime = (
+      <span className="mr-2 text-muted">{commentTimeString}</span>
+    );
     const likeOrLikes = commentLikes > 1 ? "likes" : "like";
     const displayLikes = commentLikes ? (
       <span className="mr-2 font-weight-bold text-muted">

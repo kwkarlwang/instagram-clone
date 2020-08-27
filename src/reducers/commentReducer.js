@@ -6,17 +6,6 @@ import {
   LIKE_INNERCOMMENT,
 } from "../actions/types";
 
-// const initialState = {
-//   id: 1,
-//   PostUser: "user_agent",
-//   PostAvatar: "https://picsum.photos/100/100",
-//   PostImage: "https://picsum.photos/400/400",
-//   PostDesc: "blah blah blah",
-//   PostLikes: 3,
-//   PostLiked: false,
-//   PostTime: "Now",
-//   comments: [],
-// };
 const initialState = [];
 
 export default (state = initialState, action) => {

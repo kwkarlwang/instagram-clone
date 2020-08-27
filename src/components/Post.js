@@ -22,6 +22,7 @@ import { getComments, addComment } from "../actions/commentActions";
 import { getPost, likePost } from "../actions/postActions";
 import PropTypes from "prop-types";
 import { v4 as uuid } from "uuid";
+import { createTimeString } from "../helpers/time";
 
 export class Post extends Component {
   state = {
@@ -113,6 +114,8 @@ export class Post extends Component {
         </Col>
       </Row>
     );
+
+    let timeString = createTimeString(post.postTime);
     return (
       <Card>
         <Card.Body id="username-container">
@@ -135,13 +138,20 @@ export class Post extends Component {
           <div className="align-middle">
             {post.postLiked ? (
               <HeartFill
+                role="button"
                 onClick={this.onLike}
                 className="icons text-danger"
               ></HeartFill>
             ) : (
-              <Heart onClick={this.onLike} className="icons"></Heart>
+              <Heart
+                role="button"
+                onClick={this.onLike}
+                className="icons"
+              ></Heart>
             )}
-            <ChatRight className="icons"></ChatRight>
+            <a href={`${post.id}`} className="text-body">
+              <ChatRight className="icons"></ChatRight>
+            </a>
             <BoxArrowUp
               style={{ marginBottom: "0.3rem" }}
               className="icons"
@@ -156,7 +166,9 @@ export class Post extends Component {
             <span>{post.postDesc}</span>
           </Card.Text>
           {outerComments}
-          <Card.Text style={{ color: "grey" }}>{post.postTime}</Card.Text>
+          <Card.Text className="text-muted">
+            <small>{timeString}</small>
+          </Card.Text>
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroupItem className="add-a-comment">{addAComment}</ListGroupItem>
