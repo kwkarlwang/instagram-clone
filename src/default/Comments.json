@@ -1,0 +1,32 @@
+[
+  {
+    "id": 111,
+    "commentUser": "facebook",
+    "commentAvatar": "https://facebookbrand.com/wp-content/uploads/2019/04/f_logo_RGB-Hex-Blue_512.png?w=512&h=512",
+    "commentText": "Nice looking photo!",
+    "commentLikes": 5,
+    "commentLiked": false,
+    "commentTime": "now",
+    "innerComments": []
+  },
+  {
+    "id": 222,
+    "commentUser": "microsoft",
+    "commentAvatar": "https://pbs.twimg.com/profile_images/1268191541941559296/GOQb6uBi_400x400.png",
+    "commentText": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolores natus ad, libero ducimus illum hic earum officia excepturi repellendus rem ut quam culpa dolore laudantium laboriosam facere pariatur sed.",
+    "commentLikes": 3,
+    "commentLiked": true,
+    "commentTime": "now",
+    "innerComments": [
+      {
+        "id": 333,
+        "commentUser": "rachmaninoff",
+        "commentAvatar": "https://wp-cpr.s3.amazonaws.com/uploads/2019/06/rachmaninov_young_horiz.jpg",
+        "commentText": "Music is enough for a lifetime, but a lifetime is not enough for music.",
+        "commentLikes": 10,
+        "commentLiked": true,
+        "commentTime": "now"
+      }
+    ]
+  }
+]

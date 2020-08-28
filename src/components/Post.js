@@ -101,6 +101,7 @@ export class Post extends Component {
             role="button"
             style={{ color: "blue", opacity: commentText ? 1 : 0.5 }}
             id="post-button"
+            data-testid="post-button"
             className="float-right text-primary font-weight-bold"
             onClick={this.onSubmit}
           >
@@ -114,9 +115,16 @@ export class Post extends Component {
     return (
       <Card>
         <Card.Body id="username-container">
-          <Card.Text className="font-weight-bold align-middle">
-            <Image src={post.postAvatar} roundedCircle id="avatar"></Image>
-            <span className="ml-2">{post.postUser}</span>
+          <Card.Text className="font-weight-bold">
+            <Image
+              src={post.postAvatar}
+              roundedCircle
+              id="avatar"
+              alt="post-avatar"
+            ></Image>
+            <span className="ml-2" data-testid="post-username">
+              {post.postUser}
+            </span>
             <ThreeDots className="icons float-right mt-1 mr-0"></ThreeDots>
           </Card.Text>
         </Card.Body>
@@ -124,6 +132,7 @@ export class Post extends Component {
         <Card.Img
           variant="top"
           src={post.postImage}
+          alt="post-image"
           onDoubleClick={() => (!post.postLiked ? this.onLike() : null)}
         />
         <Card.Body id="text-container">
@@ -134,16 +143,21 @@ export class Post extends Component {
                 role="button"
                 onClick={this.onLike}
                 className="icons text-danger"
+                data-testid="post-unlike-button"
               ></HeartFill>
             ) : (
               <Heart
                 role="button"
                 onClick={this.onLike}
                 className="icons"
+                data-testid="post-like-button"
               ></Heart>
             )}
             <a href={`/${post.id}`} className="text-body">
-              <ChatRight className="icons"></ChatRight>
+              <ChatRight
+                data-testid="post-chat-button"
+                className="icons"
+              ></ChatRight>
             </a>
             <BoxArrowUp
               style={{ marginBottom: "0.3rem" }}
@@ -152,12 +166,14 @@ export class Post extends Component {
             <Bookmark className="icons float-right mr-0"></Bookmark>
           </div>
           {/* display amount of likes */}
-          <Card.Text className="font-weight-bold">{likeString}</Card.Text>
+          <Card.Text className="font-weight-bold" data-testid="post-likes">
+            {likeString}
+          </Card.Text>
           {/* display post descrption */}
           <Card.Text>
             <span className="font-weight-bold">{post.postUser}</span>
             &nbsp;
-            <span>{post.postDesc}</span>
+            <span data-testid="post-description">{post.postDesc}</span>
           </Card.Text>
           {/* show at most two comments */}
           {outerComments}

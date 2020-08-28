@@ -2,25 +2,26 @@ import React from "react";
 import Post from "./components/Post";
 import "bootstrap/dist/css/bootstrap.css";
 import { Container, Row, Col } from "react-bootstrap";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import LandscapePost from "./components/LandscapePost";
 import { Provider } from "react-redux";
 import store from "./store";
 function App() {
   return (
-    <Provider store={store}>
-      <Container className="my-5">
-        <Router>
-          <Route exact path="/" component={ProtraitWrapper}></Route>
-          <Route exact path="/:id" component={LandscapePost}></Route>
-        </Router>
-      </Container>
-    </Provider>
+    <Router>
+      <Provider store={store}>
+        <div className="d-flex min-vh-100 align-items-center p-5">
+          <Container>
+            <Switch>
+              <Route exact path="/" component={ProtraitWrapper}></Route>
+              <Route exact path="/:id" component={LandscapePost}></Route>
+            </Switch>
+          </Container>
+        </div>
+      </Provider>
+    </Router>
   );
 }
-
-export default App;
-
 function ProtraitWrapper() {
   return (
     <Row>
@@ -32,3 +33,5 @@ function ProtraitWrapper() {
     </Row>
   );
 }
+
+export default App;

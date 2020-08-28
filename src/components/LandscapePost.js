@@ -115,12 +115,7 @@ export class LandscapePost extends Component {
     const usernameRow = (
       <div className="d-flex align-content-center">
         <div className="pr-3">
-          <Image
-            src={postAvatar}
-            roundedCircle
-            fluid
-            className="avatar"
-          ></Image>
+          <Image src={postAvatar} roundedCircle className="avatar"></Image>
         </div>
         <div className="my-auto">
           <span className="font-weight-bold align-text-bottom">
@@ -137,7 +132,12 @@ export class LandscapePost extends Component {
     const postComment = (
       <div className="d-flex align-content-center my-2">
         <div className="pr-3">
-          <Image src={postAvatar} roundedCircle className="avatar"></Image>
+          <Image
+            src={postAvatar}
+            alt="landscape-avatar"
+            roundedCircle
+            className="avatar"
+          ></Image>
         </div>
         <div className="my-auto">
           <span className="font-weight-bold">{postUser} </span>
@@ -202,6 +202,7 @@ export class LandscapePost extends Component {
           <Card.Img
             ref={this.image}
             src={postImage}
+            alt="landscape-image"
             onDoubleClick={() => (!postLiked ? this.onLike() : null)}
             // image determines card height
             onLoad={(img) => {
@@ -212,9 +213,13 @@ export class LandscapePost extends Component {
         <Col sm={12} md={5}>
           <Card style={{ minHeight: cardHeight, maxHeight: cardHeight }}>
             {/* display username and avatar */}
-            <Card.Header className="bg-transparent">{usernameRow}</Card.Header>
+            <Card.Header className="bg-transparent px-3">
+              {usernameRow}
+            </Card.Header>
             {/* display comments, handle overflow */}
-            <Card.Body className="overflow-auto py-0">{commentsRow}</Card.Body>
+            <Card.Body className="overflow-auto py-0 px-3">
+              {commentsRow}
+            </Card.Body>
             {/* display icons */}
             <Card.Footer className="text-muted bg-transparent">
               <div>
@@ -223,12 +228,14 @@ export class LandscapePost extends Component {
                     role="button"
                     onClick={this.onLike}
                     className="icons text-danger"
+                    data-testid="landscape-unlike-button"
                   ></HeartFill>
                 ) : (
                   <Heart
                     role="button"
                     onClick={this.onLike}
                     className="icons"
+                    data-testid="landscape-like-button"
                   ></Heart>
                 )}
                 <ChatRight
@@ -242,7 +249,12 @@ export class LandscapePost extends Component {
                 ></BoxArrowUp>
                 <Bookmark className="icons float-right mr-0"></Bookmark>
               </div>
-              <div className="font-weight-bold text-body">{displayLikes}</div>
+              <div
+                className="font-weight-bold text-body"
+                data-testid="landscape-likes"
+              >
+                {displayLikes}
+              </div>
               <div className="font-small text-muted">
                 <small>{timeString}</small>
               </div>

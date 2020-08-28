@@ -5,12 +5,19 @@ import {
   LIKE_COMMENT,
   LIKE_INNERCOMMENT,
 } from "./types";
+import defaultComments from "../default/Comments.json";
 
 export const getComments = () => (dispatch) => {
-  let comments = [];
-  if ("comments" in localStorage) {
-    comments = JSON.parse(localStorage.getItem("comments"));
+  if (!("comments" in localStorage)) {
+    defaultComments.forEach((comment) => {
+      comment.commentTime = new Date();
+      comment.innerComments.forEach((innerComment) => {
+        innerComment.commentTime = new Date();
+      });
+    });
+    localStorage.setItem("comments", JSON.stringify(defaultComments));
   }
+  let comments = JSON.parse(localStorage.getItem("comments"));
   dispatch({
     type: GET_COMMENTS,
     payload: comments,
@@ -60,7 +67,6 @@ export const likeComment = (commentId) => (dispatch) => {
 
 export const likeInnerComment = (commentId, innerCommentId) => (dispatch) => {
   const comments = JSON.parse(localStorage.getItem("comments"));
-  console.log(comments);
   const comment = comments.find((comment) => comment.id === commentId);
   const innerComment = comment.innerComments.find(
     (innerComment) => innerComment.id === innerCommentId
