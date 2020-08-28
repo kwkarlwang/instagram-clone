@@ -19,15 +19,15 @@ export class Comment extends Component {
       <div className="mt-2">
         {commentLiked ? (
           <HeartFill
-            style={{ fontSize: "1rem" }}
+            role="button"
             onClick={() => this.props.onLikeComment(this.props.data.id, id)}
-            className="text-danger float-right"
+            className="text-danger float-right heart"
             data-testid="comment-unlike-button"
           ></HeartFill>
         ) : (
           <Heart
-            style={{ fontSize: "1rem" }}
-            className="float-right"
+            role="button"
+            className="float-right heart"
             onClick={() => this.props.onLikeComment(this.props.data.id, id)}
             data-testid="comment-like-button"
           ></Heart>
