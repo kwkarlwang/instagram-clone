@@ -10,6 +10,8 @@ The following functionalities are implemented for a **single** post:
 - Comment for a post
 - Reply to a comment
 - Like a comment
+- Responsie design
+- Relative date of the post and comments
 
 Check out a deploy version <a href="https://whispering-hollows-35043.herokuapp.com/">here</a>
 
