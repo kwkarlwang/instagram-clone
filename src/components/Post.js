@@ -21,10 +21,16 @@ export class Post extends Component {
   state = {
     commentText: "",
   };
+  /**
+   * fetch post and comments from redux
+   */
   componentDidMount() {
     this.props.getPost();
     this.props.getComments();
   }
+  /**
+   * handle clicking post button, send to redux
+   */
   onSubmit = () => {
     // send to redux
     const newComment = {
@@ -43,6 +49,9 @@ export class Post extends Component {
       commentText: "",
     });
   };
+  /**
+   * handle liking post
+   */
   onLike = () => {
     this.props.likePost();
   };
@@ -54,7 +63,7 @@ export class Post extends Component {
       // find the total amount of comments (including inner comments)
       const reducer = (acc, comment) => acc + 1 + comment.innerComments.length;
       let numberOfComments = comments.reduce(reducer, 0);
-      // show the most recent two
+      // show the most recent two comments
       const commentsList = comments.slice(-2).map((outerComment) => {
         return (
           <Card.Text key={outerComment.id}>
@@ -64,6 +73,7 @@ export class Post extends Component {
           </Card.Text>
         );
       });
+      // View all comments button, redirect to landscape post
       const viewAllComments = (
         <a
           href={`/${post.id}`}
@@ -78,7 +88,7 @@ export class Post extends Component {
       );
       outerComments = [viewAllComments, ...commentsList];
     }
-
+    // dispplay the amount of likes
     const likeOrLikes = post.postLikes > 1 ? "likes" : "like";
     const likeString = post.postLikes ? `${post.postLikes} ${likeOrLikes}` : "";
     // comment form component

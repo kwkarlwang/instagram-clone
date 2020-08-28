@@ -1,3 +1,7 @@
+/**
+ * Calculate the time difference between now and given date
+ * @param {String} date the date to diff
+ */
 export const diffTime = (date) => {
   const then = new Date(date);
   const now = new Date();
@@ -13,6 +17,10 @@ export const diffTime = (date) => {
     days: Math.round(days),
   };
 };
+/**
+ * Make the post time string
+ * @param {String} date the date to diff
+ */
 export const createTimeString = (date) => {
   const { seconds, minutes, hours, days } = diffTime(date);
   let timeString = "";
@@ -32,6 +40,10 @@ export const createTimeString = (date) => {
   return timeString;
 };
 
+/**
+ * Make the comment time string
+ * @param {String} date the date to diff
+ */
 export const createCommentTimeString = (date) => {
   const { seconds, minutes, hours, days } = diffTime(date);
   let timeString = "";

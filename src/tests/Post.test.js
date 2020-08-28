@@ -103,24 +103,6 @@ describe("test Post.js", () => {
     expect(comment.commentText).toBe(testComment);
     expect(screen.queryByText(testComment)).toBeInTheDocument();
   });
-  // test("test routing, click comments icon", () => {
-  //   const { history } = renderWithRouter(<App />);
-  //   // history.push = jest.fn();
-  //   expect(history.location.pathname).toBe("/");
-  //   const chatButton = screen.getByTestId("post-chat-button");
-  //   fireEvent.click(chatButton);
-  //   const post = JSON.parse(localStorage.getItem("post"));
-  //   console.log(history.location.pathname);
-  //   // expect(history.push).toHaveBeenCalled();
-  //   // expect(history.location.pathname).toBe(`/${post.id}`);
-  // });
-  // test("test routing, click view all comments", () => {
-  //   const history = renderWithRouter(<App />);
-  //   expect(history.location.pathname).toBe("/");
-  //   fireEvent.click(screen.queryByTestId("post-chat-button"));
-  //   const post = localStorage.getItem("post");
-  //   expect(history.location.pathname).toBe(`/${post.id}`);
-  // });
 });
 
 describe("test empty localStorage on LandscapePost.js", () => {});

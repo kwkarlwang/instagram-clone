@@ -9,6 +9,10 @@ export class Comment extends Component {
     super(props);
     this.state = { expanded: false };
   }
+  /**
+   * create the heart icon for each comment
+   * @param {Object} comment the data of a comment
+   */
   createHeart = (comment) => {
     const { id, commentLiked } = comment;
     return (
@@ -31,6 +35,11 @@ export class Comment extends Component {
       </div>
     );
   };
+
+  /**
+   * create the html element for a comment
+   * @param {object} comment the data of a comment
+   */
   createComment = (comment) => {
     const { commentText, commentUser, commentTime, commentLikes } = comment;
     const commentTimeString = createCommentTimeString(commentTime);
@@ -98,7 +107,8 @@ export class Comment extends Component {
     ) : (
       ""
     );
-    // inner comments list
+    // inner comments list of a comment
+    // visiable only if expanded
     const innerCommentsList = expanded
       ? innerComments.map((innerComment) => {
           return (

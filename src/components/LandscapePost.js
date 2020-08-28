@@ -26,6 +26,7 @@ import "./LandscapePost.css";
 export class LandscapePost extends Component {
   constructor(props) {
     super(props);
+    // image ref to keep track of card height
     this.image = React.createRef();
     this.state = {
       isInnerComment: false,
@@ -35,6 +36,9 @@ export class LandscapePost extends Component {
     };
     this.inputRef = React.createRef();
   }
+  /**
+   * fetch from redux and setup resize listener
+   */
   componentDidMount() {
     // populate redux store
     this.props.getComments();
@@ -46,6 +50,9 @@ export class LandscapePost extends Component {
       });
     });
   }
+  /**
+   * handle clicking post, check if it is inner comment or outer comment
+   */
   onSubmit = () => {
     let newComment = {};
     // if not inner comment, add to outer comments
@@ -80,6 +87,11 @@ export class LandscapePost extends Component {
       currentCommentId: "",
     });
   };
+  /**
+   * handle when the reply button is clicked, populates the input with username
+   * @param {String} commentId the outer comment id that is replying
+   * @param {String} replyUser the username to populate in the input
+   */
   onReplyButton = (commentId, replyUser) => {
     // reply populates the @username
     this.setState({
@@ -87,8 +99,15 @@ export class LandscapePost extends Component {
       isInnerComment: true,
       currentCommentId: commentId,
     });
+    // make the input focus
     this.inputRef.current.focus();
   };
+
+  /**
+   * Handle likingo a comment for both outer and inner comment
+   * @param {String} commentId the outer comment id
+   * @param {String} innerCommentId the inner comment id, may be the same as commentId
+   */
   onLikeComment = (commentId, innerCommentId) => {
     // liked a inner comment
     if (commentId !== innerCommentId) {
@@ -97,6 +116,9 @@ export class LandscapePost extends Component {
       this.props.likeComment(commentId);
     }
   };
+  /**
+   * handle liking the post
+   */
   onLike = () => {
     this.props.likePost();
   };
@@ -128,7 +150,10 @@ export class LandscapePost extends Component {
       </div>
     );
 
+    // check the time difference between now and post time
     const postTimeString = createCommentTimeString(postTime);
+    // this is the post description, which is also a comment, but without
+    // reply and inner comment
     const postComment = (
       <div className="d-flex align-content-center my-2">
         <div className="pr-3">
@@ -147,6 +172,8 @@ export class LandscapePost extends Component {
         </div>
       </div>
     );
+
+    // display all the comments
     const commentsRow = (
       <div className="overflow-scroll">
         {postComment}

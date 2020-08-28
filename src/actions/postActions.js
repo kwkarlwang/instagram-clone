@@ -1,6 +1,9 @@
 import { LIKE_POST, GET_POST } from "./types";
 import defaultPost from "../default/Post.json";
 
+/**
+ * fetch the post information from local storage
+ */
 export const getPost = () => (dispatch) => {
   if (!("post" in localStorage)) {
     defaultPost.postTime = new Date();
@@ -13,6 +16,9 @@ export const getPost = () => (dispatch) => {
   });
 };
 
+/**
+ * handle liking the post
+ */
 export const likePost = () => (dispatch) => {
   const post = JSON.parse(localStorage.getItem("post"));
   post.postLiked = !post.postLiked;

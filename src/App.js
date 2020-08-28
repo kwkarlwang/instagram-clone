@@ -22,6 +22,10 @@ function App() {
     </Router>
   );
 }
+
+/**
+ * give a responsive deisgn wrapper to post
+ */
 function ProtraitWrapper() {
   return (
     <Row>

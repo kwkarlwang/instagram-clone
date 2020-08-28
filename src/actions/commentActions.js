@@ -7,6 +7,9 @@ import {
 } from "./types";
 import defaultComments from "../default/Comments.json";
 
+/**
+ * fetch the comments from localStorage
+ */
 export const getComments = () => (dispatch) => {
   if (!("comments" in localStorage)) {
     defaultComments.forEach((comment) => {
@@ -17,13 +20,17 @@ export const getComments = () => (dispatch) => {
     });
     localStorage.setItem("comments", JSON.stringify(defaultComments));
   }
-  let comments = JSON.parse(localStorage.getItem("comments"));
+  const comments = JSON.parse(localStorage.getItem("comments"));
   dispatch({
     type: GET_COMMENTS,
     payload: comments,
   });
 };
 
+/**
+ * add the new comment to localStorage
+ * @param {Object} comment the new comment to add
+ */
 export const addComment = (comment) => (dispatch) => {
   let comments = [];
   if ("comments" in localStorage) {
@@ -36,6 +43,11 @@ export const addComment = (comment) => (dispatch) => {
   });
 };
 
+/**
+ * add a inner comment to the given commentId
+ * @param {String} commentId the outer comment id to add to
+ * @param {Object} innerComment the new inner comment
+ */
 export const addInnerComment = (commentId, innerComment) => (dispatch) => {
   const comments = JSON.parse(localStorage.getItem("comments"));
   const outerComment = comments.find((comment) => comment.id === commentId);
@@ -50,6 +62,10 @@ export const addInnerComment = (commentId, innerComment) => (dispatch) => {
   });
 };
 
+/**
+ * Like the comment with associated comment id
+ * @param {String} commentId the comment id to like
+ */
 export const likeComment = (commentId) => (dispatch) => {
   const comments = JSON.parse(localStorage.getItem("comments"));
   const comment = comments.find((comment) => comment.id === commentId);
@@ -65,6 +81,11 @@ export const likeComment = (commentId) => (dispatch) => {
   });
 };
 
+/**
+ * Like a inner comment based with the given outer comment and inner comment id
+ * @param {String} commentId the outer comment id of the inner comment
+ * @param {String} innerCommentId the inner comment id to like
+ */
 export const likeInnerComment = (commentId, innerCommentId) => (dispatch) => {
   const comments = JSON.parse(localStorage.getItem("comments"));
   const comment = comments.find((comment) => comment.id === commentId);
